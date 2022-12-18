@@ -1,0 +1,97 @@
+---
+title: "Assignment 2"
+author: "Your Name"
+date: "October 10, 2022 (due October 17, 2022)"
+output: pdf_document
+editor_options: 
+  markdown: 
+    wrap: sentence
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Note: This is an individual assignment.
+No discussion with a fellow student is allowed.
+Honor code is in place.
+
+Use the getfinmdat() function in the cbw library to download monthly excess returns on apple (ticker symbol AAPL) the sp500 index (ticker synbol \^gspc) from 2010-01-01 to 2022-05-31.
+Call the downloaded object datdf.
+Use the data in datdf for Questions 1-3.
+
+## Question 1
+
+Suppose you are interested in estimating the CAPM model $$
+\text{prmapple} = \beta \, \text{prmsp500} + e
+$$ where you assume that $e$ is N(0,$\sigma^2$).
+Assuming that the data you have downloaded can be thought of as a random sample, answer the following questions.
+
+1.  What is the dim of datdf?
+
+2.  Write a function dnormal that takes as inputs a vector y, mean vector mu and variance parameter sigma2, and returns a vector of normal densities at each value of y and the corresponding value of mu.
+    The parameter sigma2 is common to each of these densities.
+
+3.  Use the dnormal function to write down a function to calculate the loglikelihood function of theta = (beta,sigma) of the CAPM model.
+    This is the sum of the log of the month-by-month normal densities of prmapple given prmsp500 and the parameters.
+    The log-likelihood function should take two inputs, theta and datdf, and return the log of the likelihood function.
+
+4.  Write down another function that calculates the cost function of theta = (beta,sigma) (this is the negative of the log-likelihood).
+
+5.  Use the ucminf function to minimize the cost function over theta = (beta,sigma).
+    Call this minimizing value thetahat = (betahat,sigmahat).
+    Use (1,.03) as the starting values.
+    Ask the ucminf function to output the hessian.
+
+6.  Use the cbind function to put thetahat and the standard errors of thetahat in a matrix object.
+    The se is the sqrt of the diag of the inverse of the hessian.
+
+```{r}
+# write your code here
+
+
+
+```
+
+## Question 2
+
+Suppose you estimate the CAPM model in Question 1 by Bayesian methods.
+The difference now is that we treat the parameters theta = (beta,sigma2) as random variables.
+We put a prior on theta and combine the prior with the likelihood by Bayes theorem to get the posterior distribution of the parameters.
+Use the MCMCregressg function in the cbw package to answer the following questions.
+
+1\.
+Do a Bayesian estimation of the CAPM model with the data in datdf.
+Make sure when you specify the model formula that there is no intercept in the model.
+Use the default 15% of the data to form the training sample prior.
+
+2\.
+What are the posterior mean, sd and the .025 quantiles of beta from this Bayesian estimation?
+
+3\.
+Is the posterior mean of beta similar to the estimate of beta you got by minimizing the cost function?
+Is the posterior sd of beta similar to the se of betahat in Question 1?
+
+4\.
+The MCMCregressg output sends out draws of sigma2 from the posterior distribution.
+Use these draws to calculate the posterior distribution of sigma.
+What are the posterior mean, sd and .025 and .975 quantiles of sigma?
+How do these compare with the sigmahat and se of sigmahat you got in Question 1?
+
+```{r}
+# write your code here
+
+
+
+```
+
+## Question 3
+
+1.  Instead of using a training sample prior, suppose you specify your prior on the parameters. Suppose that you let the prior mean of beta be 1.0, the prior variance of beta be .30 (make sure that this goes in as a matrix object), the prior mean of sigma2 be .003 and the prior variance of sigma2 be .006. How would you use the MCMCregressg function to estimate the CAPM model? For the results to be comparable with those in Question 2, omit the first 22 observations (the training sample observations in Question 2), when you do this estimation. Use the summarymcmc function to summarize the posterior distribution.
+
+```{r}
+# write your code here
+
+
+
+```
